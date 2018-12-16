@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image } from "react-native";
-import { Facebook } from 'expo'
-
+import { Facebook } from "expo";
 import { createStackNavigator } from "react-navigation";
 
 import { Button } from "react-native-elements";
@@ -14,31 +13,39 @@ class Authentication extends Component {
     header: null
   };
 
-  componentDidMount(){
-
+  componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      if (user){
+      if (user) {
         console.log(user);
-        
       }
-    })
-
+    });
   }
 
   loginFB = async () => {
+    try {
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions
+      } = await Facebook.logInWithReadPermissionsAsync("2484863974917731", {
+        permissions: ["public_profile"]
+      });
+      if (type === "success") {
 
-    const { type, token } = await Facebook.logInWithReadPermissionsAsync(
-      "2484863974917731",
-      { permissions: ["public_profile"] }
-    );
-      
-    if (type === "success") {
+        const response = await fetch(
+          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,birthday,picture.type(large)`
+        );
 
-      const credential = firebase.auth.FacebookAuthProvider.credential(token);
-      
-      firebase.auth().signInAndRetrieveDataWithCredential(credential)
-        .then(success => console.log(success))
-        .catch(err => console.log(err));
+        const success = await response.json();
+
+        alert("Logged in!", `Hi ${(await response.json()).name}!`);
+      } else {
+        alert("failed to login");
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
     }
   };
 
