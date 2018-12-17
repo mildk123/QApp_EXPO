@@ -9,32 +9,24 @@ import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/AntDesign";
 
 import { AsyncStorage } from "react-native";
-import Homescreen from "../Homescreen";
 
 class Authentication extends Component {
-  constructor () {
-    super()
+  constructor() {
+    super();
 
-    this.state = {}
+    this.state = {};
   }
   static navigationOptions = {
     header: null
   };
 
-  componentDidMount = () => {
+  toHomePage = async () => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {        
-        this.setState({
-          userInfo : [user],
-        })
+      if (user) {
+        console.log(user.displayName);
+        this.props.navigation.navigate("App");
       }
     });
-  };
-
-  toHomePage = async () => {
-    console.log(this.state.user)
-    await AsyncStorage.setItem("userLoggedIn", 'Yes');
-    this.props.navigation.navigate("Homescreen");
   };
 
   loginFB = async () => {
@@ -47,7 +39,8 @@ class Authentication extends Component {
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
       await firebase.auth().signInAndRetrieveDataWithCredential(credential);
-      this.toHomePage()
+      AsyncStorage.setItem('userLoggedIn', 'Khan')
+      this.toHomePage();
     }
   };
 
@@ -83,8 +76,7 @@ class Authentication extends Component {
 }
 
 export default (AuthStackNavigator = createStackNavigator({
-  Auth: Authentication,
-  Homescreen : Homescreen
+  Auth: Authentication
 }));
 
 const styles = StyleSheet.create({
