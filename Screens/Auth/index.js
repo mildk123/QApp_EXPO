@@ -1,51 +1,53 @@
 import React, { Component } from "react";
 import { StyleSheet, View, Image } from "react-native";
-import { Facebook } from "expo";
 import { createStackNavigator } from "react-navigation";
+
+import { Facebook } from "expo";
+import firebase from "../../config/firebase";
 
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/AntDesign";
 
-import firebase from "../../config/firebase";
+import { AsyncStorage } from "react-native";
+import Homescreen from "../Homescreen";
 
 class Authentication extends Component {
+  constructor () {
+    super()
+
+    this.state = {}
+  }
   static navigationOptions = {
     header: null
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        console.log(user);
+      if (user) {        
+        this.setState({
+          userInfo : [user],
+        })
       }
     });
-  }
+  };
+
+  toHomePage = async () => {
+    console.log(this.state.user)
+    await AsyncStorage.setItem("userLoggedIn", 'Yes');
+    this.props.navigation.navigate("Homescreen");
+  };
 
   loginFB = async () => {
-    try {
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions
-      } = await Facebook.logInWithReadPermissionsAsync("2484863974917731", {
-        permissions: ["public_profile"]
-      });
-      if (type === "success") {
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync(
+      "2484863974917731",
+      { permissions: ["public_profile"] }
+    );
 
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,birthday,picture.type(large)`
-        );
+    if (type === "success" && token) {
+      const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
-        const success = await response.json();
-
-        alert("Logged in!", `Hi ${(await response.json()).name}!`);
-      } else {
-        alert("failed to login");
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
+      await firebase.auth().signInAndRetrieveDataWithCredential(credential);
+      this.toHomePage()
     }
   };
 
@@ -60,20 +62,6 @@ class Authentication extends Component {
         </View>
 
         <View style={styles.btnContainer}>
-          {/* <Button
-            onPress={() => this.loginFB()}
-            title="Sign Up"
-            iconRight
-            icon={<Icon name="facebook-square" size={20} color="white" />}
-            buttonStyle={{
-              backgroundColor: "#3C5A99",
-              width: 150,
-              height: 55,
-              borderColor: "transparent",
-              borderWidth: 0,
-              borderRadius: 5
-            }}
-          /> */}
           <Button
             onPress={() => this.loginFB()}
             title="Login"
@@ -95,7 +83,8 @@ class Authentication extends Component {
 }
 
 export default (AuthStackNavigator = createStackNavigator({
-  Auth: Authentication
+  Auth: Authentication,
+  Homescreen : Homescreen
 }));
 
 const styles = StyleSheet.create({
