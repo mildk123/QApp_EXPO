@@ -38,7 +38,7 @@ class Authentication extends Component {
     if (type === "success" && token) {
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
-      await firebase.auth().signInAndRetrieveDataWithCredential(credential);
+       firebase.auth().signInAndRetrieveDataWithCredential(credential);
       AsyncStorage.setItem('userLoggedIn', 'Khan')
       this.toHomePage();
     }
