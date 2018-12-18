@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, Text } from "react-native";
-import { Container, Form, Item, Input, Label } from "native-base";
-import { Button } from "react-native-elements";
+import { StyleSheet, View, Text, Image } from "react-native";
+
+import { Container, Item, Input, Icon } from "native-base";
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 
@@ -12,7 +12,8 @@ class Company extends Component {
   constructor() {
     super();
     this.state = {
-      isDateTimePickerVisible: false
+      isDatePickerVisible: false,
+      isTimePickerVisible : false
     };
   }
 
@@ -20,9 +21,9 @@ class Company extends Component {
     header: null
   };
 
-  _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+  showModal = key => this.setState({ [key] : true });
 
-  _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+  hideModal = key => this.setState({ [key] : false });
 
   _handleDatePicked = date => {
     let dates = JSON.stringify(date);
@@ -30,12 +31,23 @@ class Company extends Component {
     let splitedDate = dates.split(dates, 2, 11);
     console.log(splitedDate);
     this.setState({
-      estDate: splitedDate
+      selectedDate: splitedDate
     });
 
-    this._hideDateTimePicker();
+    this.hideModal();
   };
 
+  _handleTimePicked = Time => {
+    let Times = JSON.stringify(Time);
+
+    let splitedTime = Times.split(Times, 2, 11);
+    console.log(splitedTime);
+    this.setState({
+      selectedTime: splitedTime
+    });
+
+    this.hideModal();
+  };
   render() {
     return (
       <Container>
@@ -50,97 +62,51 @@ class Company extends Component {
         />
 
         <View style={styles.container}>
-          <View style={{ marginBottom: 10 }}>
-            <Item stackedLabel>
-              <Label>Company Name :</Label>
-              <Input />
-            </Item>
-          </View>
+          <Item>
+            <Icon active name="home" />
+            <Input placeholder="Company name" />
+          </Item>
 
-          <View style={{ marginBottom: 10 }}>
-            <Item stackedLabel style={{marginBottom: 10}}>
-              <Label>Established Since : </Label>
-              <Input />
-            </Item>
-
-            {this.state.estDate && <Text>{this.state.estDate}</Text>}
-
-            <Button
-              title="Select Date"
-              onPress={this._showDateTimePicker}
-              buttonStyle={{
-                alignSelf: "flex-end",
-                backgroundColor: "#3C5A99",
-                width: "100%",
-                maxWidth: 150,
-                padding: 10,
-                borderColor: "transparent",
-                borderWidth: 0,
-                borderRadius: 10
-              }}
+          <Item>
+            <Input
+              placeholder="Established since"
+              value={this.state.selectedDate}
+              onFocus={() => this.showModal('isDatePickerVisible')}
             />
-
+            <Icon
+              active
+              name="md-calendar"
+              style={{ fontSize: 32 }}
+              onPress={() => this.showModal('isDatePickerVisible')}
+            />
             <DateTimePicker
-              isVisible={this.state.isDateTimePickerVisible}
+              isVisible={this.state.isDatePickerVisible}
               onConfirm={this._handleDatePicked}
-              onCancel={this._hideDateTimePicker}
+              onCancel={() => this.hideModal('isDatePickerVisible')}
               mode="date"
-              datePickerModeAndroid="default"
-              is24Hour={true}
             />
-          </View>
+          </Item>
 
-          <View style={{ marginBottom: 10 }}>
-            <Item stackedLabel style={{marginBottom: 10}}>
-              <Label>Timmings : </Label>
-              <Input />
-            </Item>
-
-            <Button
-              title="Select Time"
-              onPress={this._showDateTimePicker}
-              buttonStyle={{
-                alignSelf: "flex-end",
-                backgroundColor: "#3C5A99",
-                width: "100%",
-                maxWidth: 150,
-                padding: 10,
-                borderColor: "transparent",
-                borderWidth: 0,
-                borderRadius: 10
-              }}
+          <Item>
+            <Input
+              placeholder="Add Timmings"
+              value={this.state.selectedTime}
+              onFocus={() => this.showModal('isTimePickerVisible')}
+            />
+            <Icon
+              active
+              name="ios-clock"
+              style={{ fontSize: 32 }}
+              onPress={() => this.showModal('isTimePickerVisible')}
             />
             <DateTimePicker
-              isVisible={this.state.isDateTimePickerVisible}
-              onConfirm={this._handleDatePicked}
-              onCancel={this._hideDateTimePicker}
-              mode="time"
-              datePickerModeAndroid="default"
-              is24Hour={true}
+              isVisible={this.state.isTimePickerVisible}
+              onConfirm={this._handleTimePicked}
+              onCancel={ () => this.hideModal('isTimePickerVisible')}
+              mode='time'
             />
-          </View>
+          </Item>
 
-          <View style={{ marginBottom: 10 }}>
-            <Item stackedLabel style={{marginBottom: 10}}>
-              <Label>Address : </Label>
-              <Input />
-            </Item>
-            </View>
-
-          <Button
-            title="Done"
-            onPress={this._showDateTimePicker}
-            buttonStyle={{
-              alignSelf: "flex-end",
-              backgroundColor: "red",
-              width: "100%",
-              maxWidth: 150,
-              padding: 10,
-              borderColor: "transparent",
-              borderWidth: 0,
-              borderRadius: 10
-            }}
-          />
         </View>
       </Container>
     );
