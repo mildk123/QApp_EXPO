@@ -25,10 +25,14 @@ class Company extends Component {
   _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
 
   _handleDatePicked = date => {
-    console.log(date)
-    // this.setState({
-    //   estDate: date
-    // });
+    let dates = JSON.stringify(date);
+
+    let splitedDate = dates.splice(1, 11)
+
+    this.setState({
+      estDate: splitedDate
+    });
+
     this._hideDateTimePicker();
   };
 
@@ -46,44 +50,71 @@ class Company extends Component {
         />
 
         <View style={styles.container}>
-          <Form>
+          <View style={{ height: 100 }}>
             <Item stackedLabel>
               <Label>Company Name</Label>
               <Input />
             </Item>
+          </View>
 
-            <View style={{ height: 70 }}>
-              <Text>Established Since : </Text>
-              {!this.state.estDate ? <Text>Please select date of establishment</Text> : <Text>{this.state.estDate}</Text>}
+          <View style={{ height: 140 }}>
+            <Label>Established Since : </Label>
+            {this.state.estDate ? (
+              <Text>{this.state.estDate}</Text>
+            ) : (
+              <Text>Please select date of establishment</Text>
+            )}
 
-              <Button 
-              title="Select Date" 
-              onPress={this._showDateTimePicker} 
-              style={{width: 200}} 
-              />
+            <Button
+              title="Select Date"
+              onPress={this._showDateTimePicker}
+              buttonStyle={{
+                backgroundColor: "#3C5A99",
+                width: 250,
+                height: 55,
+                borderColor: "transparent",
+                borderWidth: 0,
+                borderRadius: 5
+              }}
+            />
 
-              <DateTimePicker
-                isVisible={this.state.isDateTimePickerVisible}
-                onConfirm={this._handleDatePicked}
-                onCancel={this._hideDateTimePicker}
-                mode="date"
-                datePickerModeAndroid="default"
-                is24Hour={true}
-              />
-            </View>
+            <DateTimePicker
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+              mode="date"
+              datePickerModeAndroid="default"
+              is24Hour={true}
+            />
+          </View>
 
+          <View style={{ height: 100 }}>
             <Item stackedLabel last>
               <Label>Timings</Label>
               <Input />
             </Item>
+          </View>
 
+          <View style={{ height: 100 }}>
             <Item stackedLabel last>
               <Label>Address </Label>
               <Input />
             </Item>
-          </Form>
+          </View>
+
           <View>
-            <Button title="Add" />
+            <Button
+              onPress={() => this.loginFB()}
+              title="Add"
+              buttonStyle={{
+                backgroundColor: "#3C5A99",
+                width: 250,
+                height: 55,
+                borderColor: "transparent",
+                borderWidth: 0,
+                borderRadius: 5
+              }}
+            />
           </View>
         </View>
       </Container>
