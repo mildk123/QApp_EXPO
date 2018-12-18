@@ -19,7 +19,6 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
     "react-native-easy-grid": "^0.2.0",
     "react-native-elements": "^1.0.0-beta7",
-    "react-native-fbsdk": "^0.8.0",
     "react-native-slideshow": "^1.0.1",
     "react-navigation": "^2.18.2"
   },

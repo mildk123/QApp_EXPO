@@ -10,7 +10,7 @@ class HeaderComp extends Component {
     return (
       <Header
       style={{ marginTop: 24, backgroundColor: this.props.headerColor }}
-      iosBarStyle={"dark-content"}
+      iosBarStyle={"light-content"}
       hasTabs={this.props.tabs}
       >
         <Left>
