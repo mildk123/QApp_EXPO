@@ -27,8 +27,8 @@ class Company extends Component {
   _handleDatePicked = date => {
     let dates = JSON.stringify(date);
 
-    let splitedDate = dates.splice(1, 11)
-
+    let splitedDate = dates.split(dates, 2, 11);
+    console.log(splitedDate);
     this.setState({
       estDate: splitedDate
     });
@@ -50,31 +50,33 @@ class Company extends Component {
         />
 
         <View style={styles.container}>
-          <View style={{ height: 100 }}>
+          <View style={{ marginBottom: 10 }}>
             <Item stackedLabel>
-              <Label>Company Name</Label>
+              <Label>Company Name :</Label>
               <Input />
             </Item>
           </View>
 
-          <View style={{ height: 140 }}>
-            <Label>Established Since : </Label>
-            {this.state.estDate ? (
-              <Text>{this.state.estDate}</Text>
-            ) : (
-              <Text>Please select date of establishment</Text>
-            )}
+          <View style={{ marginBottom: 10 }}>
+            <Item stackedLabel style={{marginBottom: 10}}>
+              <Label>Established Since : </Label>
+              <Input />
+            </Item>
+
+            {this.state.estDate && <Text>{this.state.estDate}</Text>}
 
             <Button
               title="Select Date"
               onPress={this._showDateTimePicker}
               buttonStyle={{
+                alignSelf: "flex-end",
                 backgroundColor: "#3C5A99",
-                width: 250,
-                height: 55,
+                width: "100%",
+                maxWidth: 150,
+                padding: 10,
                 borderColor: "transparent",
                 borderWidth: 0,
-                borderRadius: 5
+                borderRadius: 10
               }}
             />
 
@@ -88,34 +90,57 @@ class Company extends Component {
             />
           </View>
 
-          <View style={{ height: 100 }}>
-            <Item stackedLabel last>
-              <Label>Timings</Label>
+          <View style={{ marginBottom: 10 }}>
+            <Item stackedLabel style={{marginBottom: 10}}>
+              <Label>Timmings : </Label>
               <Input />
             </Item>
-          </View>
 
-          <View style={{ height: 100 }}>
-            <Item stackedLabel last>
-              <Label>Address </Label>
-              <Input />
-            </Item>
-          </View>
-
-          <View>
             <Button
-              onPress={() => this.loginFB()}
-              title="Add"
+              title="Select Time"
+              onPress={this._showDateTimePicker}
               buttonStyle={{
+                alignSelf: "flex-end",
                 backgroundColor: "#3C5A99",
-                width: 250,
-                height: 55,
+                width: "100%",
+                maxWidth: 150,
+                padding: 10,
                 borderColor: "transparent",
                 borderWidth: 0,
-                borderRadius: 5
+                borderRadius: 10
               }}
             />
+            <DateTimePicker
+              isVisible={this.state.isDateTimePickerVisible}
+              onConfirm={this._handleDatePicked}
+              onCancel={this._hideDateTimePicker}
+              mode="time"
+              datePickerModeAndroid="default"
+              is24Hour={true}
+            />
           </View>
+
+          <View style={{ marginBottom: 10 }}>
+            <Item stackedLabel style={{marginBottom: 10}}>
+              <Label>Address : </Label>
+              <Input />
+            </Item>
+            </View>
+
+          <Button
+            title="Done"
+            onPress={this._showDateTimePicker}
+            buttonStyle={{
+              alignSelf: "flex-end",
+              backgroundColor: "red",
+              width: "100%",
+              maxWidth: 150,
+              padding: 10,
+              borderColor: "transparent",
+              borderWidth: 0,
+              borderRadius: 10
+            }}
+          />
         </View>
       </Container>
     );
@@ -128,8 +153,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 25,
-    backgroundColor: "#ffffff",
-    justifyContent: "flex-start"
+    backgroundColor: "#ffffff"
   },
   btnContainer: {
     height: 150,

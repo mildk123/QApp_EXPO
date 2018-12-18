@@ -39,33 +39,37 @@ class Homescreen extends Component {
         </View>
 
         <View style={styles.btnContainer}>
+
           <Button
             onPress={() => this.moveTo("Company")}
-            title="Are you a company ?"
+            title="Are you a company?"
             icon={<Icon name="ios-business" size={20} color="white" />}
             buttonStyle={{
               backgroundColor: "#00BF8C",
-              width: 300,
-              height: 70,
+              width: '100%',
+              padding: 10,
+              maxWidth: 620,
               borderColor: "transparent",
               borderWidth: 0,
               borderRadius: 5
             }}
-            loadingRight
           />
+
           <Button
             onPress={() => this.moveTo("User")}
-            title="Are you finding/waiting for tokens ?"
+            title="Are you finding/waiting for tokens?"
             icon={<Icon name="md-person" size={20} color="white" />}
             buttonStyle={{
               backgroundColor: "#00BF8C",
-              width: 300,
-              height: 70,
+              width: '100%',
+              padding: 10,
+              maxWidth: 620,
               borderColor: "transparent",
               borderWidth: 0,
               borderRadius: 5
             }}
           />
+
         </View>
       </View>
     );
@@ -74,9 +78,9 @@ class Homescreen extends Component {
 
 
 export default HomeStackNavigator =  createStackNavigator({
+  Homescreen : Homescreen,
   Company : CompanyStackNavigator,
   addCompany: addCompany,
-  Homescreen : Homescreen,
   User : User
 });
 
@@ -88,9 +92,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   imgContainer: {
-    height: 850,
     maxHeight: "100%",
-    padding: 25,
     justifyContent: "center",
     alignItems: "center"
   },
@@ -99,10 +101,9 @@ const styles = StyleSheet.create({
     maxWidth: 360
   },
   btnContainer: {
-    height: 150,
-    padding: 25,
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-evenly"
+    height: 120,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between"
   }
 });

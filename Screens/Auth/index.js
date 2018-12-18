@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   imgContainer: {
-    height: 850,
     maxHeight: "100%",
     padding: 25,
     justifyContent: "center",
