@@ -6,6 +6,7 @@ import Header from "../../Helper/Header";
 import Icon from "react-native-vector-icons/AntDesign";
 
 import addCompany from "./addCompany";
+
 export class Company extends Component {
   addCompany = () => {
     this.props.navigation.navigate("addCompany");
@@ -13,7 +14,7 @@ export class Company extends Component {
 
   static navigationOptions = {
     header: null
-  };
+}
 
   render() {
     return (
@@ -41,7 +42,9 @@ export class Company extends Component {
   }
 }
 
-export default CompanyStackNavigator =  createStackNavigator({
+// export default Company
+
+export default createStackNavigator({
   Company: Company,
   addCompany: addCompany
 });
