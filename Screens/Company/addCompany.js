@@ -1,19 +1,21 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, TouchableHighlight } from "react-native";
 
-import { Container, Item, Input, Icon } from "native-base";
+import { Container, Item, Input, Icon, Button,Thumbnail , Text } from "native-base";
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 import Header from "../../Helper/Header";
+
+import { ImagePicker } from 'expo'
 
 class Company extends Component {
   constructor() {
     super();
     this.state = {
       isDatePickerVisible: false,
-      isTimePickerVisible : false
+      isTimePickerVisible: false,
     };
   }
 
@@ -21,9 +23,9 @@ class Company extends Component {
     header: null
   };
 
-  showModal = key => this.setState({ [key] : true });
+  showModal = key => this.setState({ [key]: true });
 
-  hideModal = key => this.setState({ [key] : false });
+  hideModal = key => this.setState({ [key]: false });
 
   _handleDatePicked = date => {
     let dates = JSON.stringify(date);
@@ -48,7 +50,20 @@ class Company extends Component {
 
     this.hideModal();
   };
+
+  imageSelect = async (pic) => {
+    // let result = await ImagePicker.launchCameraAsync()
+    let result = await ImagePicker.launchImageLibraryAsync()
+
+    if (!result.cancelled) {
+      await this.setState({
+        [pic] : result.uri
+      })
+    }
+  }
+
   render() {
+    const { pic1 , pic2 , pic3 } = this.state
     return (
       <Container>
         <Header
@@ -71,18 +86,18 @@ class Company extends Component {
             <Input
               placeholder="Established since"
               value={this.state.selectedDate}
-              onFocus={() => this.showModal('isDatePickerVisible')}
+              onFocus={() => this.showModal("isDatePickerVisible")}
             />
             <Icon
               active
               name="md-calendar"
               style={{ fontSize: 32 }}
-              onPress={() => this.showModal('isDatePickerVisible')}
+              onPress={() => this.showModal("isDatePickerVisible")}
             />
             <DateTimePicker
               isVisible={this.state.isDatePickerVisible}
               onConfirm={this._handleDatePicked}
-              onCancel={() => this.hideModal('isDatePickerVisible')}
+              onCancel={() => this.hideModal("isDatePickerVisible")}
               mode="date"
             />
           </Item>
@@ -91,21 +106,48 @@ class Company extends Component {
             <Input
               placeholder="Add Timmings"
               value={this.state.selectedTime}
-              onFocus={() => this.showModal('isTimePickerVisible')}
+              onFocus={() => this.showModal("isTimePickerVisible")}
             />
             <Icon
               active
               name="ios-clock"
               style={{ fontSize: 32 }}
-              onPress={() => this.showModal('isTimePickerVisible')}
+              onPress={() => this.showModal("isTimePickerVisible")}
             />
             <DateTimePicker
               isVisible={this.state.isTimePickerVisible}
               onConfirm={this._handleTimePicked}
-              onCancel={ () => this.hideModal('isTimePickerVisible')}
-              mode='time'
+              onCancel={() => this.hideModal("isTimePickerVisible")}
+              mode="time"
             />
           </Item>
+
+          <View>
+          <Text style={{margin: 10, fontSize: 22, fontStyle: 'italic'}}>Certificates: </Text>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+
+          <TouchableHighlight onPress={() => this.imageSelect('pic1')}>
+          <Thumbnail large source={pic1 ? {uri: pic1} : (require('../../assets/placeholder/person_place.png')) } />
+          </TouchableHighlight>
+
+          <TouchableHighlight onPress={() => this.imageSelect('pic2')}>
+          <Thumbnail large source={pic2 ? {uri: pic2} : (require('../../assets/placeholder/person_place.png')) } />
+          </TouchableHighlight>
+
+          <TouchableHighlight onPress={() => this.imageSelect('pic3')}>
+          <Thumbnail large source={pic3 ? {uri: pic3} : (require('../../assets/placeholder/person_place.png')) } />
+          </TouchableHighlight>
+
+          </View>
+
+
+            {/* <Button 
+            onPress={this.imageSelect}
+            bordered 
+            style={{alignSelf: 'flex-end'}}>
+              <Text>Select</Text>
+            </Button> */}
+          </View>
 
         </View>
       </Container>
@@ -129,3 +171,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly"
   }
 });
+
