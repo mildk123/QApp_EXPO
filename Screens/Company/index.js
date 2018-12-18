@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/AntDesign";
 
 import addCompany from "./addCompany";
 
-export class Company extends Component {
+class Company extends Component {
   addCompany = () => {
     this.props.navigation.navigate("addCompany");
   };
@@ -42,9 +42,9 @@ export class Company extends Component {
   }
 }
 
-// export default Company
+export default Company
 
-export default createStackNavigator({
-  Company: Company,
-  addCompany: addCompany
-});
+// export default createStackNavigator({
+//   Company: Company,
+//   addCompany: addCompany
+// });
