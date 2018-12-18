@@ -2,20 +2,28 @@ import React, { Component } from "react";
 
 import { StyleSheet, View, TouchableHighlight } from "react-native";
 
-import { Container, Item, Input, Icon, Button,Thumbnail , Text } from "native-base";
+import {
+  Container,
+  Item,
+  Input,
+  Icon,
+  Button,
+  Thumbnail,
+  Text
+} from "native-base";
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 
 import Header from "../../Helper/Header";
 
-import { ImagePicker } from 'expo'
+import { ImagePicker } from "expo";
 
 class Company extends Component {
   constructor() {
     super();
     this.state = {
       isDatePickerVisible: false,
-      isTimePickerVisible: false,
+      isTimePickerVisible: false
     };
   }
 
@@ -51,19 +59,23 @@ class Company extends Component {
     this.hideModal();
   };
 
-  imageSelect = async (pic) => {
+  imageSelect = async pic => {
     // let result = await ImagePicker.launchCameraAsync()
-    let result = await ImagePicker.launchImageLibraryAsync()
+    let result = await ImagePicker.launchImageLibraryAsync();
 
     if (!result.cancelled) {
       await this.setState({
-        [pic] : result.uri
-      })
+        [pic]: result.uri
+      });
     }
+  };
+
+  next = () => {
+    this.props.navigation.navigate('Address')
   }
 
   render() {
-    const { pic1 , pic2 , pic3 } = this.state
+    const { pic1, pic2, pic3 } = this.state;
     return (
       <Container>
         <Header
@@ -123,32 +135,62 @@ class Company extends Component {
           </Item>
 
           <View>
-          <Text style={{margin: 10, fontSize: 22, fontStyle: 'italic'}}>Certificates: </Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
+            <Text style={{ margin: 10, fontSize: 22, fontStyle: "italic" }}>
+              Certificates:{" "}
+            </Text>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+            >
+              <TouchableHighlight onPress={() => this.imageSelect("pic1")}>
+                <Thumbnail
+                  large
+                  source={
+                    pic1
+                      ? { uri: pic1 }
+                      : require("../../assets/placeholder/person_place.png")
+                  }
+                />
+              </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => this.imageSelect('pic1')}>
-          <Thumbnail large source={pic1 ? {uri: pic1} : (require('../../assets/placeholder/person_place.png')) } />
-          </TouchableHighlight>
+              <TouchableHighlight onPress={() => this.imageSelect("pic2")}>
+                <Thumbnail
+                  large
+                  source={
+                    pic2
+                      ? { uri: pic2 }
+                      : require("../../assets/placeholder/person_place.png")
+                  }
+                />
+              </TouchableHighlight>
 
-          <TouchableHighlight onPress={() => this.imageSelect('pic2')}>
-          <Thumbnail large source={pic2 ? {uri: pic2} : (require('../../assets/placeholder/person_place.png')) } />
-          </TouchableHighlight>
+              <TouchableHighlight onPress={() => this.imageSelect("pic3")}>
+                <Thumbnail
+                  large
+                  source={
+                    pic3
+                      ? { uri: pic3 }
+                      : require("../../assets/placeholder/person_place.png")
+                  }
+                />
+              </TouchableHighlight>
+            </View>
 
-          <TouchableHighlight onPress={() => this.imageSelect('pic3')}>
-          <Thumbnail large source={pic3 ? {uri: pic3} : (require('../../assets/placeholder/person_place.png')) } />
-          </TouchableHighlight>
-
+            <View style={{ padding: 120 }}>
+              <Button
+                large
+                onPress={this.next}
+                bordered
+                style={{
+                  alignSelf: "center",
+                  borderRadius: 50,
+                  width: 124,
+                  justifyContent: "center"
+                }}
+              >
+                <Text>Next</Text>
+              </Button>
+            </View>
           </View>
-
-
-            {/* <Button 
-            onPress={this.imageSelect}
-            bordered 
-            style={{alignSelf: 'flex-end'}}>
-              <Text>Select</Text>
-            </Button> */}
-          </View>
-
         </View>
       </Container>
     );
@@ -171,4 +213,3 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly"
   }
 });
-
