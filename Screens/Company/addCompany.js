@@ -170,12 +170,5 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 25,
     backgroundColor: "#ffffff"
-  },
-  btnContainer: {
-    height: 150,
-    padding: 25,
-    flexDirection: "row",
-    alignItems: "flex-end",
-    justifyContent: "space-evenly"
   }
 });
