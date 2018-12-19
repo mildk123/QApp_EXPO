@@ -8,7 +8,7 @@ export default class TimePicker extends Component {
     this.state = {
       selectedTime: {
         Hours: "Hours",
-        Seconds: "Seconds"
+        Minute: "Minute"
       }
     };
   }
@@ -18,14 +18,17 @@ export default class TimePicker extends Component {
       const { action, hour, minute } = await TimePickerAndroid.open({
         hour: 14,
         minute: 0,
-        is24Hour: false // Will display '2 PM'
+        is24Hour: false, // Will display '2 PM'
+        mode : 'spinner'
       });
+      
       if (action !== TimePickerAndroid.dismissedAction) {
-        await this.props.getTime(Hours, Seconds);
+        await this.props.getTime(hour, minute);
+        console.log('action, hour, minute', action, hour, minute)
         this.setState({
             selectedTime: {
-            Hours,
-            Seconds
+            Hours : hour,
+            Minute : minute
           }
         });
       }
@@ -43,7 +46,7 @@ export default class TimePicker extends Component {
           <Icon
             onPress={() =>
               this.setState({
-                selectedTime: { Hours: "Hours", Seconds: "Seconds"}
+                selectedTime: { Hours: "Hours", Minute: "Minute"}
               })
             }
             active
@@ -53,7 +56,7 @@ export default class TimePicker extends Component {
         )}
         <Input
           value={`${this.state.selectedTime.Hours}:${
-            this.state.selectedTime.Seconds
+            this.state.selectedTime.Minute
           }`}
         />
         <Button onPress={() => this.openTime()}>

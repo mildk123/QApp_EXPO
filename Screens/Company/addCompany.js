@@ -40,6 +40,7 @@ class Company extends Component {
 
     if (!result.cancelled) {
       await this.setState({
+        [pic] : result.uri,
         certificates: {
           [pic]: result.uri
         }
