@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 
-import {
-  StyleSheet,
-  View,
-  TouchableHighlight,
-} from "react-native";
+import { StyleSheet, View, TouchableHighlight } from "react-native";
 
-import DatePicker from '../../components/datePicker'
+import DatePicker from "../../components/datePicker";
+import TimePicker from "../../components/timePicker";
+
 import {
   Container,
   Item,
@@ -17,7 +15,6 @@ import {
   Text
 } from "native-base";
 
-import DateTimePicker from "react-native-modal-datetime-picker";
 
 import Header from "../../Helper/Header";
 
@@ -27,7 +24,7 @@ class Company extends Component {
   constructor() {
     super();
     this.state = {
-      isTimePickerVisible: false,
+      isTimePickerVisible: false
     };
   }
 
@@ -35,19 +32,7 @@ class Company extends Component {
     header: null
   };
 
-  showModal = key => this.setState({ [key]: true });
 
-  hideModal = key => this.setState({ [key]: false });
-
-  _handleTimePicked = Time => {
-    let strTime = JSON.stringify(Time);
-    let splitTime = strTime.slice(12, 20);
-    this.setState({
-      selectedTime: splitTime
-    });
-
-    this.hideModal();
-  };
 
   imageSelect = async pic => {
     // let result = await ImagePicker.launchCameraAsync()
@@ -55,21 +40,36 @@ class Company extends Component {
 
     if (!result.cancelled) {
       await this.setState({
-        [pic]: result.uri
+        certificates: {
+          [pic]: result.uri
+        }
       });
     }
   };
 
-  
   getDate = (year, month, day) => {
-    console.log('year, month, day',year, month, day)
-  }
+    this.setState({
+      selectedDate: {
+        day,
+        month,
+        year
+      }
+    });
+  };
+
+  getTime = (hour, minute) => {
+    this.setState({
+      selectedTime: {
+        hour,
+        minute
+      }
+    });
+  };
+
 
   next = () => {
     this.props.navigation.navigate("Address");
   };
-
-  
 
   render() {
     const { pic1, pic2, pic3 } = this.state;
@@ -88,14 +88,16 @@ class Company extends Component {
         <View style={styles.container}>
           <Item>
             <Icon active name="home" />
-            <Input placeholder="Company name" />
+            <Input placeholder="Company name" onChangeText={(text) => this.setState({companyName: text})} />
           </Item>
 
-          <Item style={{padding: 10}}>
-            <DatePicker getDate={this.getDate}  />
+          <Item style={{ padding: 10 }}>
+            <DatePicker getDate={this.getDate} />
           </Item>
 
-          
+          <Item style={{ padding: 10 }}>
+            <TimePicker getTime={this.getTime} />
+          </Item>
 
           <View>
             <Text style={{ margin: 10, fontSize: 22, fontStyle: "italic" }}>

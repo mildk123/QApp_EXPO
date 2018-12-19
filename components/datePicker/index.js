@@ -30,7 +30,7 @@ export default class DatePicker extends Component {
         });
       }
     } catch ({ code, message }) {
-      console.warn("Cannot open date picker", message);
+      console.log("Cannot open date picker", message);
     }
   };
 
