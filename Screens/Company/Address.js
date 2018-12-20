@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View, TextInput  } from "react-native";
+import { StyleSheet, View } from "react-native";
 import {
   Container,
   Content,
@@ -12,9 +12,10 @@ import {
   Right,
   Button,
   Spinner,
-  Icon
+  Icon,
+  Input,
+  Item
 } from "native-base";
-
 import { Location, Permissions } from "expo";
 
 class Address extends Component {
@@ -23,7 +24,7 @@ class Address extends Component {
     this.state = {
       isLoaded: false,
       isLoading: true,
-      kidlist: []
+      searchTerm: "khan"
     };
   }
 
@@ -31,9 +32,9 @@ class Address extends Component {
     title: "Select Location"
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.searchVenues();
-  }
+  };
 
   _getLocationAsync = async () => {
     let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -47,11 +48,11 @@ class Address extends Component {
     this.setState({ location });
   };
 
-  searchVenues = () => {
-    let searchQuery = "khan";
+  searchVenues = async () => {
+    let searchQuery = this.state.searchTerm;
 
     fetch(
-      `https://api.foursquare.com/v2/venues/search?query=${searchQuery}&limit=15&ll=24.9,67&client_id=0KBKAJO2Y4NWYLRXL4XDBKPEGG45EVHHIPKX5G32GTQGKNSS&client_secret=ZZOQY3QLIOGQ3FFHWQKZUIIH0KKTLQPOHFON001XQQDUEQOS&v=20181024`
+      `https://api.foursquare.com/v2/venues/search?query=${searchQuery}&limit=25&ll=24.9,67&client_id=0KBKAJO2Y4NWYLRXL4XDBKPEGG45EVHHIPKX5G32GTQGKNSS&client_secret=ZZOQY3QLIOGQ3FFHWQKZUIIH0KKTLQPOHFON001XQQDUEQOS&v=20181024`
     )
       .then(response => {
         return response.json();
@@ -69,41 +70,97 @@ class Address extends Component {
   };
 
   selectVenue = () => {
-    alert('selected')
+    alert("selected");
+  };
+
+  viewOnMap = (lat, lng, name) => {
+    this.props.navigation.navigate("MapCompany", {latlng : {lat, lng}, name: name} )
   }
 
-  viewOnMap = (lat, lng) => {
-console.log(lat,lng)
-  }
+  onChange = Term => {
+    this.setState({
+      searchTerm: Term
+    });
+  };
+
   render() {
     const { isLoading, isLoaded, venuesList } = this.state;
-    if (isLoading) return <Spinner />;
-    if (!isLoaded || !venuesList) return null;
+    if (isLoading)
+      return (
+        <Container>
+          <Content>
+            <View style={{ padding: 5 }}>
+              <Item>
+                <Input
+                  placeholder="Search Your Place Name"
+                  onChangeText={Text => this.onChange(Text)}
+                />
+                <Button
+                  style={{ padding: 12 }}
+                  iconLeft
+                  onPress={() => this.searchVenues()}
+                >
+                  <Icon name="ios-search" />
+                  <Text>Search</Text>
+                </Button>
+              </Item>
+            </View>
+            <Spinner />
+          </Content>
+        </Container>
+      );
+    if (!isLoaded || !venuesList) return <Text>No Data Found</Text>;
     return (
       <View style={styles.container}>
         <Container>
           <Content>
-            <View></View>
+            <View style={{ padding: 5 }}>
+              <Item>
+                <Input
+                  placeholder="Search Your Place Name"
+                  onChangeText={Text => this.onChange(Text)}
+                />
+                <Button
+                  style={{ padding: 12 }}
+                  iconLeft
+                  onPress={() => this.searchVenues()}
+                >
+                  <Icon name="ios-search" />
+                  <Text onPress={() => this.searchVenues()}>Search</Text>
+                </Button>
+              </Item>
+            </View>
+
             <List>
               {venuesList &&
                 venuesList.map((venue, index) => {
                   return (
                     <ListItem
                       avatar
-                      onPress={() => this.viewOnMap(venue.location.lat, venue.location.lng)}
+                      onPress={() =>
+                        this.viewOnMap(venue.location.lat, venue.location.lng, venue.name)
+                      }
                       key={index}
                     >
                       <Left>
-                      <Icon style={{fontSize:30}} active name="ios-pin" />
+                        <Icon style={{ fontSize: 30 }} active name="ios-pin" />
                       </Left>
                       <Body>
                         <Text>{venue.name}</Text>
-                        <Text note>Addrress : {venue.location.formattedAddress[0]}, {venue.location.formattedAddress[2]} </Text>
-                        <Text note>Postal : {venue.location.formattedAddress[2]}, {venue.location.formattedAddress[2]} </Text>
+                        <Text note>
+                          Addrress : {venue.location.formattedAddress[0]},{" "}
+                          {venue.location.formattedAddress[2]}{" "}
+                        </Text>
+                        <Text note>
+                          Postal : {venue.location.formattedAddress[2]},{" "}
+                          {venue.location.formattedAddress[2]}{" "}
+                        </Text>
                       </Body>
 
                       <Right>
-                        <Button onPress={() => this.selectVenue(index)}><Text>Select</Text></Button>
+                        <Button onPress={() => this.selectVenue(index)}>
+                          <Text>Select</Text>
+                        </Button>
                       </Right>
                     </ListItem>
                   );

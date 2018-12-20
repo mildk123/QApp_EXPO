@@ -10,6 +10,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Header from "../../Helper/Header";
 import addCompany from '../Company/addCompany';
 import Address from "../Company/Address";
+import MapCompany from "../Company/mapCompany";
 
 class Homescreen extends Component {
   static navigationOptions = {
@@ -83,6 +84,7 @@ export default HomeStackNavigator =  createStackNavigator({
   Homescreen : Homescreen,
   Company : CompanyStackNavigator,
   addCompany: addCompany,
+  MapCompany : MapCompany,
   User : User
 });
 
