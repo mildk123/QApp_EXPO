@@ -80,11 +80,11 @@ class Homescreen extends Component {
 
 
 export default HomeStackNavigator =  createStackNavigator({
-  Address: Address,
   Homescreen : Homescreen,
   Company : CompanyStackNavigator,
   addCompany: addCompany,
   MapCompany : MapCompany,
+  Address: Address,
   User : User
 });
 

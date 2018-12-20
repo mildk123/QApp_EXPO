@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, AsyncStorage } from "react-native";
 import {
   Container,
   Content,
@@ -69,13 +69,25 @@ class Address extends Component {
       .catch(error => error);
   };
 
-  selectVenue = () => {
-    alert("selected");
+  selectVenue = async index => {
+    try {
+      var jsonOfItem = await AsyncStorage.setItem(
+        "myCompany",
+        JSON.stringify(this.state.venuesList[index])
+        );
+        this.props.navigation.navigate('Company');
+      // return jsonOfItem;
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   viewOnMap = (lat, lng, name) => {
-    this.props.navigation.navigate("MapCompany", {latlng : {lat, lng}, name: name} )
-  }
+    this.props.navigation.navigate("MapCompany", {
+      latlng: { lat, lng },
+      name: name
+    });
+  };
 
   onChange = Term => {
     this.setState({
@@ -138,7 +150,11 @@ class Address extends Component {
                     <ListItem
                       avatar
                       onPress={() =>
-                        this.viewOnMap(venue.location.lat, venue.location.lng, venue.name)
+                        this.viewOnMap(
+                          venue.location.lat,
+                          venue.location.lng,
+                          venue.name
+                        )
                       }
                       key={index}
                     >
