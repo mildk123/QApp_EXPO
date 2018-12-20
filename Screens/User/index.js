@@ -24,6 +24,8 @@ export class User extends Component {
           searchBtn={false}
           favBtn={true}
           threeDots={true}
+          {...this.props}
+
         />
         <View style={{ flex: 1 }}>
           <Fab

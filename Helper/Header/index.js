@@ -2,20 +2,24 @@ import React, { Component } from "react";
 import { Header, Left, Body, Right, Button, Icon, Title } from "native-base";
 
 class HeaderComp extends Component {
-  constructor () {
-    super()
+  constructor() {
+    super();
   }
-  
+
   render() {
     return (
       <Header
-      style={{ marginTop: 24, backgroundColor: this.props.headerColor }}
-      iosBarStyle={"light-content"}
-      hasTabs={this.props.tabs}
+        style={{ marginTop: 24, backgroundColor: this.props.headerColor }}
+        iosBarStyle={"light-content"}
+        hasTabs={this.props.tabs}
       >
         <Left>
           <Button
-            onPress={() => this.props.navigation.toggleDrawer()}
+            onPress={
+              this.props.goBack === true
+                ? () => this.props.navigation.goBack()
+                : () => this.props.navigation.toggleDrawer()
+            }
             transparent
           >
             <Icon name={this.props.icon} />

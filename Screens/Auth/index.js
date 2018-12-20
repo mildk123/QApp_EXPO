@@ -10,6 +10,8 @@ import Icon from "react-native-vector-icons/AntDesign";
 
 import { AsyncStorage } from "react-native";
 
+const database = firebase.database().ref();
+
 class Authentication extends Component {
   constructor() {
     super();
@@ -23,8 +25,22 @@ class Authentication extends Component {
   toHomePage = async () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        console.log(user.displayName);
-        this.props.navigation.navigate("App");
+        let username = user.displayName;
+        let email = user.email;
+        let photoURL = user.photoURL;
+        let uid = user.uid;
+
+        database.child("users/" + uid).set(
+          {
+            username,
+            email,
+            photoURL,
+            uid
+          },
+          () => {
+            this.props.navigation.navigate("App");
+          }
+        );
       }
     });
   };
@@ -39,7 +55,7 @@ class Authentication extends Component {
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
 
       await firebase.auth().signInAndRetrieveDataWithCredential(credential);
-      AsyncStorage.setItem('userLoggedIn', 'Khan')
+      AsyncStorage.setItem("userLoggedIn", "Khan");
       this.toHomePage();
     }
   };

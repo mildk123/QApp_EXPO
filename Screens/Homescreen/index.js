@@ -12,6 +12,7 @@ import addCompany from '../Company/addCompany';
 import Address from "../Company/Address";
 import MapCompany from "../Company/mapCompany";
 
+
 class Homescreen extends Component {
   static navigationOptions = {
     header: null
@@ -27,11 +28,13 @@ class Homescreen extends Component {
         <Header
           headerColor="#00BF8C"
           icon={"menu"}
+          menuBtn={this.props}
           title={"Select"}
           hasTabs={"false"}
           searchBtn={false}
           favBtn={false}
           threeDots={true}
+          {...this.props}
         />
         <View style={styles.imgContainer}>
           <Image
@@ -85,7 +88,7 @@ export default HomeStackNavigator =  createStackNavigator({
   addCompany: addCompany,
   MapCompany : MapCompany,
   Address: Address,
-  User : User
+  User : User,
 });
 
 

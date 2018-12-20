@@ -84,6 +84,9 @@ class Company extends Component {
           searchBtn={false}
           favBtn={true}
           threeDots={true}
+          {...this.props}
+          goBack={true}
+
         />
 
         <View style={styles.container}>
