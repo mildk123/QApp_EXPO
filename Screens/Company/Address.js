@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { StyleSheet, View, AsyncStorage } from "react-native";
 import {
   Container,
@@ -17,6 +16,9 @@ import {
   Item
 } from "native-base";
 import { Location, Permissions } from "expo";
+
+import firebase from "../../config/firebase";
+const database = firebase.database().ref();
 
 class Address extends Component {
   constructor(props) {
@@ -74,8 +76,20 @@ class Address extends Component {
       var jsonOfItem = await AsyncStorage.setItem(
         "myCompany",
         JSON.stringify(this.state.venuesList[index])
-        );
-        this.props.navigation.navigate('Company');
+      );
+      console.log(jsonOfItem);
+
+      let uid = firebase.auth().currentUser.uid;
+      // database.child("companies/" + uid).update(
+      //   {
+      //     companyName,
+      //     selectedDate,
+      //     selectedTime
+      //   },
+      //   () => {
+      //     this.props.navigation.navigate("Company");
+      //   }
+      // );
       // return jsonOfItem;
     } catch (error) {
       console.log(error.message);

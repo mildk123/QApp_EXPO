@@ -14,11 +14,12 @@ import {
   Thumbnail,
   Text
 } from "native-base";
-
-
 import Header from "../../Helper/Header";
-
 import { ImagePicker } from "expo";
+
+import firebase from "../../config/firebase";
+
+const database = firebase.database().ref();
 
 class Company extends Component {
   constructor() {
@@ -32,15 +33,13 @@ class Company extends Component {
     header: null
   };
 
-
-
   imageSelect = async pic => {
     // let result = await ImagePicker.launchCameraAsync()
     let result = await ImagePicker.launchImageLibraryAsync();
 
     if (!result.cancelled) {
       await this.setState({
-        [pic] : result.uri,
+        [pic]: result.uri,
         certificates: {
           [pic]: result.uri
         }
@@ -67,9 +66,24 @@ class Company extends Component {
     });
   };
 
-
   next = () => {
-    this.props.navigation.navigate("Address");
+    let companyName = this.state.companyName;
+    let selectedDate = this.state.selectedDate;
+    let selectedTime = this.state.selectedTime;
+
+    if (companyName && selectedDate && selectedTime) {
+      let uid = firebase.auth().currentUser.uid
+      database.child("companies/" + uid).set(
+        {
+          companyName,
+          selectedDate,
+          selectedTime
+        },
+        () => {
+          this.props.navigation.navigate("Address");
+        }
+      );
+    }
   };
 
   render() {
@@ -86,13 +100,15 @@ class Company extends Component {
           threeDots={true}
           {...this.props}
           goBack={true}
-
         />
 
         <View style={styles.container}>
           <Item>
             <Icon active name="home" />
-            <Input placeholder="Company name" onChangeText={(text) => this.setState({companyName: text})} />
+            <Input
+              placeholder="Company name"
+              onChangeText={text => this.setState({ companyName: text })}
+            />
           </Item>
 
           <Item style={{ padding: 10 }}>
