@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TextInput  } from "react-native";
 import {
   Container,
   Content,
@@ -10,7 +10,6 @@ import {
   Left,
   Body,
   Right,
-  Thumbnail,
   Button,
   Spinner,
   Icon
@@ -69,6 +68,13 @@ class Address extends Component {
       .catch(error => error);
   };
 
+  selectVenue = () => {
+    alert('selected')
+  }
+
+  viewOnMap = (lat, lng) => {
+console.log(lat,lng)
+  }
   render() {
     const { isLoading, isLoaded, venuesList } = this.state;
     if (isLoading) return <Spinner />;
@@ -77,14 +83,14 @@ class Address extends Component {
       <View style={styles.container}>
         <Container>
           <Content>
+            <View></View>
             <List>
               {venuesList &&
                 venuesList.map((venue, index) => {
-                  console.log(venue)
                   return (
                     <ListItem
                       avatar
-                      onPress={() => this._viewMore(index)}
+                      onPress={() => this.viewOnMap(venue.location.lat, venue.location.lng)}
                       key={index}
                     >
                       <Left>
@@ -92,11 +98,12 @@ class Address extends Component {
                       </Left>
                       <Body>
                         <Text>{venue.name}</Text>
-                        <Text note>Addrress : {venue.location.formattedAddress[0]}, {venue.location.formattedAddress[2]}, {venue.location.formattedAddress[2]} </Text>
+                        <Text note>Addrress : {venue.location.formattedAddress[0]}, {venue.location.formattedAddress[2]} </Text>
+                        <Text note>Postal : {venue.location.formattedAddress[2]}, {venue.location.formattedAddress[2]} </Text>
                       </Body>
 
                       <Right>
-                        <Text note>3:43 pm</Text>
+                        <Button onPress={() => this.selectVenue(index)}><Text>Select</Text></Button>
                       </Right>
                     </ListItem>
                   );
