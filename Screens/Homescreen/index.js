@@ -25,17 +25,6 @@ class Homescreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Header
-          headerColor="#00BF8C"
-          icon={"menu"}
-          menuBtn={this.props}
-          title={"Select"}
-          hasTabs={"false"}
-          searchBtn={false}
-          favBtn={false}
-          threeDots={true}
-          {...this.props}
-        />
         <View style={styles.imgContainer}>
           <Image
             style={styles.picSize}
