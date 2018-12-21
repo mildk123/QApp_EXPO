@@ -77,7 +77,8 @@ class Company extends Component {
         {
           companyName,
           selectedDate,
-          selectedTime
+          selectedTime,
+          uid,
         },
         () => {
           this.props.navigation.navigate("Address");
