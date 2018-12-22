@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import { createStackNavigator } from "react-navigation";
-import CompanyStackNavigator from '../Company'
-import User from '../User'
-
 import { StyleSheet, View, Image } from "react-native";
+
 import { Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/Ionicons";
-
 import Header from "../../Helper/Header";
+
+import CompanyStackNavigator from '../Company'
 import addCompany from '../Company/addCompany';
 import Address from "../Company/Address";
 import MapCompany from "../Company/mapCompany";
 
+import User from '../User'
+import getToken from '../User/getToken'
 
 class Homescreen extends Component {
   static navigationOptions = {
@@ -73,11 +74,15 @@ class Homescreen extends Component {
 
 export default HomeStackNavigator =  createStackNavigator({
   Homescreen : Homescreen,
+
   Company : CompanyStackNavigator,
   addCompany: addCompany,
-  MapCompany : MapCompany,
   Address: Address,
+  
+  MapCompany : MapCompany,
+  
   User : User,
+  getToken : getToken 
 });
 
 

@@ -34,14 +34,22 @@ class User extends Component {
     header : null
   };
 
+  getOnMap = (index) => {
+    let selectedVenue = this.state.companyList[index]
 
-  
-  viewOnMap = (lat, lng, name) => {
+    let name = selectedVenue.companyName
+    let lat = selectedVenue.companyDetails.location.lat
+    let lng = selectedVenue.companyDetails.location.lng
     this.props.navigation.navigate("MapCompany", {
       latlng: { lat, lng },
       name: name
     });
   };
+
+  getToken = (index) => {
+    let selectedVenue = this.state.companyList[index]
+    this.props.navigation.navigate('getToken', {selectedVenue})
+  }
 
   componentDidMount = async () => {
       let uid = await firebase.auth().currentUser.uid;
@@ -150,16 +158,10 @@ class User extends Component {
 
             <List>
                 {companyList.map((item, index) => {
+                  console.log(item)
                   return (
                     <ListItem
                       avatar
-                      onPress={() =>
-                        this.viewOnMap(
-                          item.location.lat,
-                          item.location.lng,
-                          item.companyName
-                        )
-                      }
                       key={index}
                     >
                       <Left>
@@ -175,9 +177,12 @@ class User extends Component {
                           Postal : {item.companyDetails.location.formattedAddress[2]}</Text>
                       </Body>
 
-                      <Right>
-                        <Button onPress={() => this.selectVenue(index)}>
-                          <Text>Select</Text>
+                      <Right style={{flexDirection: 'row' }}>
+                        <Button onPress={() => this.getToken(index)}>
+                          <Text>Get Token</Text>
+                        </Button>
+                        <Button danger onPress={() => this.getOnMap(index)}>
+                          <Text>More info</Text>
                         </Button>
                       </Right>
                     </ListItem>

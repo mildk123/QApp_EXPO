@@ -1,8 +1,10 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, YellowBox } from "react-native";
 
 import { AppLoading, Font, Icon } from "expo";
 import AppNavigator from "./navigation/AppNavigator";
+
+YellowBox.ignoreWarnings(['Setting a timer']);
 
 export default class App extends React.Component {
   state = {
