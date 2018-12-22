@@ -7,8 +7,8 @@ export default class TimePicker extends Component {
     super();
     this.state = {
       selectedTime: {
-        Hours: "Hours",
-        Minute: "Minute"
+        Hours: "Timming",
+        Minute: ""
       }
     };
   }
@@ -24,7 +24,6 @@ export default class TimePicker extends Component {
       
       if (action !== TimePickerAndroid.dismissedAction) {
         await this.props.getTime(hour, minute);
-        console.log('action, hour, minute', action, hour, minute)
         this.setState({
             selectedTime: {
             Hours : hour,
@@ -33,20 +32,20 @@ export default class TimePicker extends Component {
         });
       }
     } catch ({ code, message }) {
-      console.log("Cannot open time picker", message);
+      alert("Cannot open time picker", message);
     }
   };
 
   render() {
     return (
       <View style={{ flex: 1, flexDirection: "row" }}>
-        {this.state.selectedTime.Hours === "Hours" ? (
+        {this.state.selectedTime.Hours === "Timming" ? (
           <Icon active name={"md-time"} style={{ fontSize: 32 }} />
         ) : (
           <Icon
             onPress={() =>
               this.setState({
-                selectedTime: { Hours: "Hours", Minute: "Minute"}
+                selectedTime: { Hours: "Timming", Minute: ""}
               })
             }
             active

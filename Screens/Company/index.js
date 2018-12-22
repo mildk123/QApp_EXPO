@@ -29,27 +29,30 @@ class Company extends Component {
     super();
     this.state = {
       isLoaded: false,
-      isLoading: true
+      isLoading: true,
+      companyList: []
     };
   }
 
   componentDidMount = async () => {
     let uid = await firebase.auth().currentUser.uid;
-    database.child("companies/").on("child_added", callback => {
-      if (uid === callback.key) {
-        let myCompany = callback.val();
-        this.setState({
-          isLoaded: true,
-          isLoading: false,
-          company: {
+    database.child("companies/" + uid).on("child_added", callback => {
+      let myCompany = callback.val();
+
+      this.setState({
+        isLoaded: true,
+        isLoading: false,
+        companyList: [
+          ...this.state.companyList,
+          {
             companyDetails: myCompany.companyDetails,
             companyName: myCompany.companyName,
             selectedDate: myCompany.selectedDate,
             selectedTime: myCompany.selectedTime,
             uid: myCompany.uid
           }
-        });
-      }
+        ]
+      });
     });
   };
 
@@ -62,7 +65,7 @@ class Company extends Component {
   };
 
   render() {
-    const { isLoading, isLoaded, company } = this.state;
+    const { isLoading, isLoaded, companyList } = this.state;
     if (isLoading)
       return (
         <Container>
@@ -86,12 +89,12 @@ class Company extends Component {
               position="bottomRight"
               onPress={() => this.addCompany()}
             >
-              <Icon style={{fontSize: 52}} name="md-add-circle-outline" />
+              <Icon style={{ fontSize: 52 }} name="md-add-circle-outline" />
             </Fab>
           </View>
         </Container>
       );
-    if (!isLoaded || !company) return <Text>No Data Found</Text>;
+    if (!isLoaded || !companyList) return <Text> No Data Found </Text>;
 
     return (
       <View style={styles.container}>
@@ -109,42 +112,46 @@ class Company extends Component {
 
           <Content>
             <List>
-              <ListItem avatar>
-                <Left>
-                  <Icon
-                    style={{ fontSize: 30, color: "green" }}
-                    active
-                    name="ios-business"
-                  />
-                </Left>
-                <Body>
-                  <Text>{company.companyName}</Text>
-                  <Text note>
-                    Timmings : {company.selectedTime.hour}:{company.selectedTime.minute}
-                  </Text>
-                  <Text note>
-                    Established Since : {company.selectedDate.day}-{company.selectedDate.month}-{company.selectedDate.year}
-                  </Text>
-                  <Text note>
-                    Category : {company.companyDetails.categories[0].name}
-                  </Text>
-                  <Text note>
-                    Address : {company.companyDetails.location.address}
-                  </Text>
-                  <Text note>
-                    City : {company.companyDetails.location.city}
-                  </Text>
-                  <Text note>
-                    Postal Code : {company.companyDetails.location.postalCode}
-                  </Text>
-                </Body>
+              {companyList.map((item, index) => {
+                  return <ListItem key={index} avatar>
+                    <Left>
+                      <Icon
+                        style={{ fontSize: 30, color: "green" }}
+                        active
+                        name="ios-business"
+                      />
+                    </Left>
+                    <Body>
+                      <Text>{item.companyName}</Text>
+                      <Text note>
+                        Timmings : {item.selectedTime.hour}:
+                        {item.selectedTime.minute}
+                      </Text>
+                      <Text note>
+                        Established Since : {item.selectedDate.day}-
+                        {item.selectedDate.month}-{item.selectedDate.year}
+                      </Text>
+                      <Text note>
+                        Category : {item.companyDetails.categories[0].name}
+                      </Text>
+                      <Text note>
+                        Address : {item.companyDetails.location.address}
+                      </Text>
+                      <Text note>
+                        City : {item.companyDetails.location.city}
+                      </Text>
+                      <Text note>
+                        Postal Code : {item.companyDetails.location.postalCode}
+                      </Text>
+                    </Body>
 
-                <Right>
-                  <Button onPress={() => this.moreInfo()}>
-                    <Text>More</Text>
-                  </Button>
-                </Right>
-              </ListItem>
+                    <Right>
+                      <Button onPress={() => this.moreInfo()}>
+                        <Text>More</Text>
+                      </Button>
+                    </Right>
+                  </ListItem>;
+                })}
             </List>
           </Content>
 
@@ -154,7 +161,7 @@ class Company extends Component {
               position="bottomRight"
               onPress={() => this.addCompany()}
             >
-              <Icon style={{fontSize: 52}} name="md-add-circle-outline" />
+              <Icon style={{ fontSize: 52 }} name="md-add-circle-outline" />
             </Fab>
           </View>
         </Container>

@@ -7,9 +7,9 @@ export default class DatePicker extends Component {
     super();
     this.state = {
       selectedDate: {
-        day: "Day",
-        month: "Month",
-        year: "Year"
+        day: "Since :",
+        month: "",
+        year: ""
       }
     };
   }
@@ -30,20 +30,20 @@ export default class DatePicker extends Component {
         });
       }
     } catch ({ code, message }) {
-      console.log("Cannot open date picker", message);
+      alert("Cannot open date picker", message);
     }
   };
 
   render() {
     return (
       <View style={{ flex: 1, flexDirection: "row" }}>
-        {this.state.selectedDate.day === "Day" ? (
+        {this.state.selectedDate.day === "Since :" ? (
           <Icon active name={"md-calendar"} style={{ fontSize: 32 }} />
         ) : (
           <Icon
             onPress={() =>
               this.setState({
-                selectedDate: { year: "Year", month: "Month", day: "Day" }
+                selectedDate: { year: "Since :", month: "", day: "" }
               })
             }
             active

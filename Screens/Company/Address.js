@@ -23,9 +23,6 @@ const database = firebase.database().ref();
 class Address extends Component {
   constructor(props) {
     super(props);
-    console.ignoredYellowBox = [
-      'Setting a timer'
-      ];
     this.state = {
       isLoaded: false,
       isLoading: true,
@@ -76,18 +73,24 @@ class Address extends Component {
 
   selectVenue = async index => {
     try {
-      let companyDetails = this.state.venuesList[index];
       let uid = firebase.auth().currentUser.uid;
-
-      database.child("companies/" + uid).update(
+      let companyDetails = this.state.venuesList[index];
+      let companyName = this.props.navigation.state.params.companyName;
+      let selectedDate = this.props.navigation.state.params.selectedDate;
+      let selectedTime = this.props.navigation.state.params.selectedTime;
+      database.child("companies/" + uid).push(
         {
-          companyDetails
+          companyDetails,
+          companyName,
+          selectedDate,
+          selectedTime,
+          uid,
         },
         () => {
           this.props.navigation.navigate("Company");
         }
       );
-      
+
       // return jsonOfItem;
     } catch (error) {
       console.log(error.message);

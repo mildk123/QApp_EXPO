@@ -24,6 +24,7 @@ const database = firebase.database().ref();
 class Company extends Component {
   constructor() {
     super();
+    
     this.state = {
       isTimePickerVisible: false
     };
@@ -66,24 +67,19 @@ class Company extends Component {
     });
   };
 
-  next = () => {
+  next = async () => {
     let companyName = this.state.companyName;
     let selectedDate = this.state.selectedDate;
     let selectedTime = this.state.selectedTime;
 
     if (companyName && selectedDate && selectedTime) {
-      let uid = firebase.auth().currentUser.uid
-      database.child("companies/" + uid).set(
-        {
+        this.props.navigation.navigate("Address", {
           companyName,
           selectedDate,
           selectedTime,
-          uid,
-        },
-        () => {
-          this.props.navigation.navigate("Address");
-        }
-      );
+        });
+    }else {
+      alert('Please fill all the required information.')
     }
   };
 
@@ -112,11 +108,11 @@ class Company extends Component {
             />
           </Item>
 
-          <Item style={{ padding: 10 }}>
+          <Item style={{ padding: 10}}>
             <DatePicker getDate={this.getDate} />
           </Item>
 
-          <Item style={{ padding: 10 }}>
+          <Item style={{ padding: 10}}>
             <TimePicker getTime={this.getTime} />
           </Item>
 
