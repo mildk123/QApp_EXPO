@@ -182,7 +182,7 @@ class User extends Component {
                           <Text>Get Token</Text>
                         </Button>
                         <Button danger onPress={() => this.getOnMap(index)}>
-                          <Text>More info</Text>
+                          <Text>Get Directions</Text>
                         </Button>
                       </Right>
                     </ListItem>
