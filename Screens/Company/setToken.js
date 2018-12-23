@@ -15,10 +15,11 @@ import {
   Input,
   Label,
   CheckBox,
-  ListItem,
-  Left,
-  Right
+  Left
 } from "native-base";
+
+import { List, ListItem, Right, Thumbnail } from "native-base";
+
 import Header from "../../Helper/Header";
 
 export default class setToken extends Component {
@@ -155,8 +156,32 @@ class Statistics extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Statistics</Text>
+      <View style={{ flex: 1, padding: 10 }}>
+        <Card style={{ padding: 10 }}>
+          <Text>Token Bought: </Text>
+        </Card>
+        <Card style={{ padding: 10 }}>
+          <View>
+            <List>
+              <ListItem avatar>
+                <Left>
+                  <Thumbnail
+                    source={require("../../assets/placeholder/person_place.png")}
+                  />
+                </Left>
+                <Body>
+                  <Text>Kumar Pratik</Text>
+                  <Text note>
+                    Doing what you like will always keep you happy . .
+                  </Text>
+                </Body>
+                <Right>
+                  <Text note>3:43 pm</Text>
+                </Right>
+              </ListItem>
+            </List>
+          </View>
+        </Card>
       </View>
     );
   }
@@ -178,14 +203,13 @@ class TokenUpdate extends Component {
                 <Text> 15</Text>
               </Item>
             </Left>
-          
 
-          <Left>
-            <Label>Remaining : </Label>
-            <Item>
-              <Text> 15</Text>
-            </Item>
-          </Left>
+            <Left>
+              <Label>Remaining : </Label>
+              <Item>
+                <Text> 15</Text>
+              </Item>
+            </Left>
           </CardItem>
         </Card>
 
