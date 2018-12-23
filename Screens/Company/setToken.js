@@ -7,12 +7,15 @@ import {
   Text,
   Button,
   Icon,
-  Left,
   Body,
-  Right,
   View,
   Tab,
-  Tabs
+  Tabs,
+  Item,
+  Input,
+  Label,
+  CheckBox,
+  ListItem
 } from "native-base";
 import Header from "../../Helper/Header";
 
@@ -41,7 +44,7 @@ export default class setToken extends Component {
             textStyle={{ color: "#fff" }}
             activeTabStyle={{ backgroundColor: "#00BF8C" }}
             activeTextStyle={{ color: "#fff", fontWeight: "normal" }}
-            heading="Get Token"
+            heading="Add Tokens"
           >
             <TokenCard />
           </Tab>
@@ -61,6 +64,12 @@ export default class setToken extends Component {
 }
 
 class TokenCard extends Component {
+  constructor() {
+    super();
+    this.state = {
+      allowTokens: false
+    };
+  }
   static navigationOptions = {
     header: null
   };
@@ -70,43 +79,48 @@ class TokenCard extends Component {
       <View style={styles.container}>
         <Content>
           <Card style={{ flex: 1, flexDirection: "column", padding: 3 }}>
-            <CardItem>
-              <Left>
-                <Icon name="ios-radio-button-on" />
-                <Body>
-                  <Text>Total Token </Text>
-                  <Text>April 15, 2016</Text>
-                </Body>
-              </Left>
+            <ListItem style={{ flexDirection: "row" }}>
+              <CheckBox
+                onPress={() =>
+                  this.setState({ allowTokens: !this.state.allowTokens })
+                }
+                checked={this.state.allowTokens}
+              />
+              <Body>
+                {this.state.allowTokens ? <Text>Add Tokens </Text> : <Text>No Tokens today </Text>}
+              </Body>
+            </ListItem>
 
-              <Right>
-                <Body>
-                  <Text>Current Token </Text>
-                  <Text>April 15, 2016</Text>
-                </Body>
-              </Right>
-              <Icon name="ios-nuclear" />
-            </CardItem>
+            {this.state.allowTokens && <CardItem>
+              <Label>Total Tokens : </Label>
+              <Item style={{ width: 200 }}>
+                <Input 
+                  keyboardType="number-pad"
+                  onChangeText={text => this.setState({ companyName: text })}
+                />
+                <Icon active name="ios-help-buoy" />
+              </Item>
+            </CardItem>}
 
-            <CardItem>
-              <Left>
-                <Icon name="ios-time" />
-                <Body>
-                  <Text>Average Token Time </Text>
-                  <Text>April 15, 2016</Text>
-                </Body>
-              </Left>
-            </CardItem>
+            {this.state.allowTokens && <CardItem>
+              <Label>Time for each Token : </Label>
+              <Item style={{ width: 150 }}>
+                <Input
+                  keyboardType="number-pad"
+                  onChangeText={text => this.setState({ companyName: text })}
+                />
+                <Icon active name="md-time" />
+              </Item>
+            </CardItem>}
 
-            <CardItem style={{ justifyContent: "flex-end" }}>
+            {this.state.allowTokens && <CardItem style={{ justifyContent: "flex-end" }}>
               <Button
-                large
-                style={{ backgroundColor: "red", borderRadius: 25 }}
+                style={{ backgroundColor: "#00BF8C", borderRadius: 25 }}
               >
-                <Text>1,926 stars</Text>
-                <Icon name="md-add" />
+                <Text>Done</Text>
               </Button>
-            </CardItem>
+            </CardItem>}
+
           </Card>
         </Content>
       </View>
