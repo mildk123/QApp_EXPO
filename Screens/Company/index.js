@@ -60,6 +60,10 @@ class Company extends Component {
     this.props.navigation.navigate("addCompany");
   };
 
+  setToken = (index) => {
+    this.props.navigation.navigate('setToken');
+  }
+  
   static navigationOptions = {
     header: null
   };
@@ -146,11 +150,11 @@ class Company extends Component {
                     </Body>
 
                     <Right>
-                      <Button onPress={() => this.moreInfo()}>
-                        <Text>More</Text>
+                      <Button style={{borderRadius : 25}} onPress={() => this.setToken(index)}>
+                        <Text>Set Token</Text>
                       </Button>
                     </Right>
-                  </ListItem>;
+                  </ListItem>
                 })}
             </List>
           </Content>

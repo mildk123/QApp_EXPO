@@ -167,7 +167,8 @@ class User extends Component {
                       <Left>
                         <Icon style={{ fontSize: 30 }} active name="ios-pin" />
                       </Left>
-                      <Body>
+
+                      {/* <Body>
                         <Text>{item.companyName}</Text>
                         <Text note>
                           Address : {item.companyDetails.location.formattedAddress[0]},{" "}
@@ -175,13 +176,39 @@ class User extends Component {
                         </Text>
                         <Text note>
                           Postal : {item.companyDetails.location.formattedAddress[2]}</Text>
-                      </Body>
+                      </Body> */}
 
-                      <Right style={{flexDirection: 'row' }}>
-                        <Button onPress={() => this.getToken(index)}>
+                      <Body>
+                      <Text>{item.companyName}</Text>
+                      <Text note>
+                        Timmings : {item.selectedTime.hour}:
+                        {item.selectedTime.minute}
+                      </Text>
+                      <Text note>
+                        Established Since : {item.selectedDate.day}-
+                        {item.selectedDate.month}-{item.selectedDate.year}
+                      </Text>
+                      <Text note>
+                        Category : {item.companyDetails.categories[0].name}
+                      </Text>
+                      <Text note>
+                        Address : {item.companyDetails.location.address}
+                      </Text>
+                      <Text note>
+                        City : {item.companyDetails.location.city}
+                      </Text>
+                      <Text note>
+                        Postal Code : {item.companyDetails.location.postalCode}
+                      </Text>
+                    </Body>
+
+                      <Right style={{flexDirection: 'column', justifyContent: 'space-between' }}>
+                        <Button info style={{width: 170}} onPress={() => this.getToken(index)}>
+                        <Icon name='md-disc' />
                           <Text>Get Token</Text>
                         </Button>
-                        <Button danger onPress={() => this.getOnMap(index)}>
+                        <Button success style={{width: 170}} onPress={() => this.getOnMap(index)}>
+                          <Icon name='ios-pin' />
                           <Text>Get Directions</Text>
                         </Button>
                       </Right>

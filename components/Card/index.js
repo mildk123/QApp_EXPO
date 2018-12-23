@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import {
   Container,
-  Header,
   Content,
   Card,
   CardItem,
-  Thumbnail,
   Text,
   Button,
   Icon,
   Left,
   Body,
   Right,
-  View
 } from "native-base";
 export default class CardShowcaseExample extends Component {
   render() {

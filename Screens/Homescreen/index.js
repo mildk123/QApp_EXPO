@@ -8,6 +8,7 @@ import Header from "../../Helper/Header";
 
 import CompanyStackNavigator from '../Company'
 import addCompany from '../Company/addCompany';
+import setToken from '../Company/setToken'
 import Address from "../Company/Address";
 import MapCompany from "../Company/mapCompany";
 
@@ -73,6 +74,7 @@ class Homescreen extends Component {
 
 
 export default HomeStackNavigator =  createStackNavigator({
+  setToken : setToken,
   Homescreen : Homescreen,
 
   Company : CompanyStackNavigator,
