@@ -74,12 +74,12 @@ class Homescreen extends Component {
 
 
 export default HomeStackNavigator =  createStackNavigator({
-  setToken : setToken,
   Homescreen : Homescreen,
-
+  
   Company : CompanyStackNavigator,
   addCompany: addCompany,
   Address: Address,
+  setToken : setToken,
   
   MapCompany : MapCompany,
   

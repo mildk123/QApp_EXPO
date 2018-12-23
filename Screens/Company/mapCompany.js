@@ -1,8 +1,7 @@
 import React from "react";
 import { Platform, View, StyleSheet, Text } from "react-native";
-import MapView, { Marker } from "react-native-maps";
-
-import { Location, Permissions } from "expo";
+import MapView from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 
 export default class MapCompany extends React.Component {
   constructor(props) {
@@ -39,29 +38,36 @@ export default class MapCompany extends React.Component {
   render() {
     const { region, markers } = this.state;
     return (
-      <MapView 
-      showsCompass={true}
-      zoomControlEnabled={true}
-      loadingEnabled={true}
-      mapType='hybrid' showsUserLocation={true} style={styles.Map} region={region}>
-        <Marker
-          key={markers.myMarker.title}
-          coordinate={{
-            latitude: markers.myMarker.latitude,
-            longitude: markers.myMarker.longitude
-          }}
+      <MapView
+        showsCompass={true}
+        zoomControlEnabled={true}
+        loadingEnabled={true}
+        mapType="hybrid"
+        showsUserLocation={true}
+        style={styles.Map}
+        region={region}
+      >
+        <MapView.Marker
+          pinColor="#ffff00"
           title={markers.myMarker.title}
           description={markers.myMarker.description}
+          key={markers.myMarker.title}
+          coordinate={markers.myMarker}
         />
-        <Marker
-        pinColor={'lightblue'}
-          key={markers.venueMarker.title}
-          coordinate={{
-            latitude: markers.venueMarker.latitude,
-            longitude: markers.venueMarker.longitude
-          }}
-          title={markers.venueMarker.title}
-          description={markers.venueMarker.description}
+
+        <MapView.Marker 
+        pinColor="lightblue"
+        title={markers.venueMarker.title}
+        description={markers.venueMarker.description}
+        key={markers.venueMarker.title}
+        coordinate={markers.venueMarker} />
+
+        <MapViewDirections
+          origin={markers.myMarker}
+          destination={markers.venueMarker}
+          apikey={"AIzaSyAhKK1zYTiJfLvdq4Fv7UFEFx-XSMwUZMo"}
+          strokeWidth={10}
+          strokeColor="hotpink"
         />
       </MapView>
     );
