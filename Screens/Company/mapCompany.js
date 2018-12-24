@@ -55,7 +55,7 @@ export default class MapCompany extends React.Component {
           coordinate={markers.myMarker}
         />
 
-        <MapView.Marker 
+        <MapView 
         pinColor="lightblue"
         title={markers.venueMarker.title}
         description={markers.venueMarker.description}
