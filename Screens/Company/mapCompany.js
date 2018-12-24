@@ -56,7 +56,7 @@ export default class MapCompany extends React.Component {
         />
 
         <MapView.Marker 
-        pinColor="red"
+        pinColor="purple"
         title={markers.venueMarker.title}
         description={markers.venueMarker.description}
         key={markers.venueMarker.title}
